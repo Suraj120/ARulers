@@ -101,6 +101,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         updateText(text: "\(distance)", atPosition: end.position)
         
+        
     }
     
     func updateText(text: String, atPosition position:SCNVector3) {
