@@ -45,12 +45,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("Touches detected")
         
-        if dotNodes.count >= 2 {
-            for dot in dotNodes {
-                dot.removeFromParentNode()
-            }
-            dotNodes = [SCNNode]()
-        }
+        print("number of nodes \(dotNodes.count)")
+        
+//        if dotNodes.count >= 5 {
+//            for dot in dotNodes {
+//                dot.removeFromParentNode()
+//            }
+//            dotNodes = [SCNNode]()
+//        }
         
         if let touchLocation = touches.first?.location(in: sceneView) {
             
@@ -74,35 +76,60 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let dotNode = SCNNode(geometry: dotGeometry)
         dotNode.position = SCNVector3Make(hitResult.worldTransform.columns.3.x, hitResult.worldTransform.columns.3.y, hitResult.worldTransform.columns.3.z)
         
+        //dotNode.position = SCNVector3Make(hitResult.worldTransform.columns.3.x, hitResult.worldTransform.columns.3.y, 0.0)
+        
+        
+        
         sceneView.scene.rootNode.addChildNode(dotNode)
         
         dotNodes.append(dotNode)
         
-        if dotNodes.count >= 2 {
-            calculate()
+        if dotNodes.count >= 4 {
+            calculateCoordinates()
         }
     }
     
-    func calculate (){
-        let start = dotNodes[0]
-        let end = dotNodes[1]
+    var allX = [Float]()
+    var allY = [Float]()
+    func calculateCoordinates() {
         
-        print(start.position)
-        print(end.position)
-        
-        //distance in 3D space using pythogoras theorem!!!
-        
-        let a = end.position.x - start.position.x
-        let b = end.position.y - start.position.y
-        let c = end.position.z - start.position.z
-        
-        let distance = abs(sqrt(pow(a, 2) + pow(b, 2) + pow(c, 2)))
-        print("distance in space \(distance)")
-        
-        updateText(text: "\(distance)", atPosition: end.position)
-        
+        for val in dotNodes {
+            
+            allY.append(val.position.y)
+            allX.append(val.position.x)
+            print("coordinates\(val)")
+    }
+        print("y values \(allY)")
+        print("x values \(allX)")
         
     }
+    
+    
+//    func calculate (){
+//        let start = dotNodes[0]
+//        let end = dotNodes[1]
+//        //let end = dotNodes[dotNodes.count - 1]
+//
+//        for val in dotNodes.enumerated() {
+//            print("coordinates\(val)")
+//        }
+//
+//        print(start.position)
+//        print(end.position)
+//
+//        //distance in 3D space using pythogoras theorem!!!
+//
+//        let a = end.position.x - start.position.x
+//        let b = end.position.y - start.position.y
+//        let c = end.position.z - start.position.z
+//
+//        let distance = abs(sqrt(pow(a, 2) + pow(b, 2) + pow(c, 2)))
+//        print("distance in space \(distance)")
+//
+//        updateText(text: "\(distance)", atPosition: end.position)
+//
+//
+//    }
     
     func updateText(text: String, atPosition position:SCNVector3) {
         
@@ -119,11 +146,23 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
 }
 
+//X, Y    Arrays of the x and y coordinates of the vertices, traced in a clockwise direction, starting at any vertex. If you trace them counterclockwise, the result will be correct but have a negative sign.
+//numPoints    The number of vertices
+//Returns    the area of the polygon
 
 
 
-
-
+//function polygonArea(X, Y, numPoints)
+//{
+//    area = 0;         // Accumulates area in the loop
+//    j = numPoints-1;  // The last vertex is the 'previous' one to the first
+//
+//    for (i=0; i<numPoints; i++)
+//    { area = area +  (X[j]+X[i]) * (Y[j]-Y[i]);
+//        j = i;  //j is previous vertex to i
+//    }
+//    return area/2;
+//}
 
 
 
